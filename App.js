@@ -1,21 +1,63 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useState } from 'react';
+import {
+	StyleSheet,
+	Text,
+	TextInput,
+	View,
+	SafeAreaView,
+	Button,
+	ScrollView,
+} from 'react-native';
+import Todo from './components/Todo';
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
+const App = () => {
+	const [input, setInput] = useState('');
+	const [todos, setTodos] = useState([]);
+
+	console.log(input, '<<< input');
+	console.log(todos, '<<< todos');
+
+	const addTodo = () => {
+		setTodos([input, ...todos]);
+		setInput('');
+	};
+
+	return (
+		<SafeAreaView style={styles.container}>
+			<View>
+				<Text style={styles.titleText}>Time Tracker</Text>
+			</View>
+			<ScrollView>
+				{todos.map((todo) => (
+					<Todo key={todo} title={todo} />
+				))}
+			</ScrollView>
+			<TextInput
+				style={styles.todoInput}
+				value={input}
+				onChangeText={(text) => setInput(text)}
+			/>
+			<Button title='Add To Do' onPress={addTodo} />
+		</SafeAreaView>
+	);
+};
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+	container: {
+		flex: 1,
+	},
+	titleText: {
+		fontSize: 30,
+		fontWeight: 'bold',
+		textAlign: 'center',
+	},
+	todoInput: {
+		height: 40,
+		borderColor: 'red',
+		borderWidth: 0.5,
+		marginVertical: 10,
+		marginHorizontal: 20,
+	},
 });
+
+export default App;
